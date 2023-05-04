@@ -1,0 +1,104 @@
+{% extends 'admin/admin_base.html'%}
+{% block content %}
+
+
+<div class="container-sm mt-5 "  style="max-width:960px;" >
+    <div class="row justify-content-between m-3">
+        <div class="col-md-5 bg-white p-0 border border-secondary ">
+            <div class="label p-2">
+                <h5  class="form-label text-muted"><i class="fa-solid fa-qrcode"></i> QRCODE</h5>
+            </div>
+            <div class="bg-secondary  p-2"></div>
+            <form method="POST" enctype="multipart/form-data" class="form-control form-control-lg border-0" >
+                {% csrf_token %}
+
+                <div class="  m-3">
+                    <div class="mb-3 row">
+                        <label   class="col-sm-2 col-form-label text-muted">Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext ms-2"  value="{{code.QRCODE_Name}}">
+                        </div>
+                    </div>
+                    <center>
+                        <div class="card-body border-0 ">
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <input class="form-control" type="file" id="formFile" name="QRCODE">
+                            <p  class="alert alert-danger p-2 mt-2" id="img_error"  style=" display: none;" >File is not an image</p>
+
+                        </div>
+                    </center>
+                    <br>
+                    <button type="submit" class="btn btn-secondary my-3" disabled>Update</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-5">
+            <div class="container-sm mt-5 "  style="max-width:960px;" >
+                {% for qrcode in qrcodes %}
+
+                <div class="card m-3" style="width: 18rem;">
+
+
+                    {% if messages %}
+                    <div class="alert alert-success  mb-2 mb-1 rounded-0" role="alert">
+                        {% for message in messages %}
+                        <li {% if message.tags %} {{ message.tags }} {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+
+                    {% if qrcode.QRCODE %}
+                    <img class="img-thumbnail" src="{{ qrcode.QRCODE.url }}" alt="QR Code">
+                    {% else %}
+                    No QR Code
+                    {% endif %}
+                    <div class="card-body">
+                        <span >{{ qrcode.QRCODE_Name }} </span>
+                        <small class="float-end"><a href="{% url 'admin_edit_QRCODE' id=qrcode.id %}"><i class="fa-solid fa-pen-nib"></i> Edit</a></small>
+
+                    </div>
+                </div>
+
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+document.getElementById('submit_form').addEventListener('submit', function(event) {
+  // Get the selected file from the input field
+  var fileInput1 = document.getElementById('formFile');
+  var file1 = fileInput1.files[0];
+
+  // Check if the file is an image
+  if (file1 && !file1.type.match('image.*')) {
+    // If the file is not an image, show the error message
+    document.getElementById('img_error').style.display = 'block';
+    event.preventDefault(); // prevent the form from submitting
+  }
+
+});
+</script>
+{% endblock %}
+
+
+
+

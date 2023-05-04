@@ -1,0 +1,71 @@
+{% extends 'user/base.html'%}
+
+{% block content %}
+{% include 'user/rooms.html' %}
+<nav class="container " aria-label="Page navigation example">
+    <ul class="pagination justify-content-end mt-3">
+        {% if room.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'home' %}?page={{room.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for number in room.paginator.page_range %}
+        <li class="page-item"><a class="page-link" href="{% url 'home' %}?page={{number}}">{{number}}</a></li>
+        {% endfor %}
+
+        {% if room.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'home' %}?page={{room.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+    </ul>
+</nav>
+
+
+<div class="container-sm card mt-5 p-0 mb-5 border border  rounded-0" >
+    <div class="container p-0">
+        <div class="fs-3 p-4 ps-4 text-muted "  >
+            <h2 class="d-inline card-title m-0  ms-4 "><i class="fa-solid fa-list-ol"></i> Rules</h2>
+        </div>
+        <ol class="m-4" >
+            {% for rule in rules_show %}
+            <div class=" " style="width: auto;"  >
+                <p class="text-dark m-0 " >
+                    <small>
+                        <li class="float-start me-1" ></li>
+                        <strong>
+                            <small class="d-inline">{{ rule.description }}</small>
+                        </strong>
+                    </small>
+                </p>
+            </div>
+            <hr>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+
+
+
+
+
+{% include 'admin/footer_admin.html' %}
+{% endblock %}
